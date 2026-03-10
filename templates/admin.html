@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel | Car Corals</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .box { background: white; padding: 25px; border-radius: 20px; max-width: 800px; margin: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        button { background: #3b82f6; color: white; border: none; padding: 14px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .p-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; align-items: center; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>Add / Edit Product</h2>
+        <form action="/save_product" method="POST">
+            <input type="hidden" name="id" id="p-id">
+            <input type="text" name="name" id="p-name" placeholder="Product Name" required>
+            <select name="category" id="p-cat">
+                {% for c in categories %}<option value="{{c.name}}">{{c.name}}</option>{% endfor %}
+            </select>
+            <input type="text" name="brand" id="p-brand" placeholder="Brand">
+            <input type="text" name="quality" id="p-quality" placeholder="Quality (e.g. Premium)">
+            <input type="text" name="car_model" id="p-model" placeholder="Car Model">
+            <input type="text" name="price" id="p-price" placeholder="Price (₹)">
+            <input type="text" name="img1" id="p-img1" placeholder="Main Image URL">
+            <input type="text" name="img2" id="p-img2" placeholder="Image 2 URL">
+            <input type="text" name="img3" id="p-img3" placeholder="Image 3 URL">
+            <input type="text" name="video" id="p-vid" placeholder="Video URL (.mp4)">
+            <textarea name="details" id="p-details" placeholder="Full Details"></textarea>
+            <button type="submit">Save Product</button>
+        </form>
+    </div>
+
+    <div class="box" style="margin-top:20px;">
+        <h3>Inventory</h3>
+        {% for p in products %}
+        <div class="p-row">
+            <span>{{ p.name }}</span>
+            <div>
+                <button onclick='edit({{ p|tojson }})' style="width:auto; background:orange; padding:5px 10px;">Edit</button>
+                <a href="/delete_product/{{p.id}}"><button style="width:auto; background:red; padding:5px 10px;">X</button></a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="box" style="margin-top:20px;">
+        <h3>Add Category</h3>
+        <form action="/save_category" method="POST">
+            <input type="text" name="name" placeholder="Category Name">
+            <input type="text" name="icon" placeholder="Emoji">
+            <button type="submit" style="background:green;">Add Category</button>
+        </form>
+    </div>
+
+    <div class="box" style="margin-top:20px;">
+        <h3>Hero Banners</h3>
+        <form action="/save_banners" method="POST">
+            <input type="text" name="banner_urls" placeholder="URL 1">
+            <input type="text" name="banner_urls" placeholder="URL 2">
+            <input type="text" name="banner_urls" placeholder="URL 3">
+            <button type="submit" style="background:black;">Update Banners</button>
+        </form>
+    </div>
+
+    <script>
+        function edit(p) {
+            document.getElementById('p-id').value = p.id;
+            document.getElementById('p-name').value = p.name;
+            document.getElementById('p-brand').value = p.brand;
+            document.getElementById('p-quality').value = p.quality;
+            document.getElementById('p-model').value = p.car_model;
+            document.getElementById('p-price').value = p.price;
+            document.getElementById('p-img1').value = p.img1;
+            document.getElementById('p-img2').value = p.img2;
+            document.getElementById('p-img3').value = p.img3;
+            document.getElementById('p-vid').value = p.video;
+            document.getElementById('p-details').value = p.details;
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
+
