@@ -4,17 +4,14 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# --- DATABASE CONFIGURATION ---
-# Using your provided PostgreSQL Internal URL
-# We use .replace() because SQLAlchemy requires "postgresql://"
+# Replace with your provided PostgreSQL Internal URL
 RAW_DB_URL = "postgresql://car_corals_db_user:o7H1hjQ5qc99MBEcnm7cHGv7iDupPGfs@dpg-d6p5hr7gi27c73ahcjn0-a/car_corals_db"
-
 app.config['SQLALCHEMY_DATABASE_URI'] = RAW_DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# --- MODELS ---
+# MODELS
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -38,41 +35,29 @@ class Banner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.Text)
 
-# Auto-create tables on startup
 with app.app_context():
     db.create_all()
 
-# --- ROUTES ---
+def get_prod_json(products):
+    return [{
+        "id": p.id, "name": p.name, "brand": p.brand, "category": p.category,
+        "car_model": p.car_model, "quality": p.quality, "price": p.price,
+        "img1": p.img1, "img2": p.img2, "img3": p.img3, "video": p.video, "details": p.details
+    } for p in products]
+
 @app.route('/')
 def index():
     products = Product.query.all()
     categories = Category.query.all()
     banners = Banner.query.all()
-    
-    prod_json = [{
-        "id": p.id, "name": p.name, "brand": p.brand, "category": p.category,
-        "car_model": p.car_model, "quality": p.quality, "price": p.price,
-        "img1": p.img1, "img2": p.img2, "img3": p.img3, "video": p.video, "details": p.details
-    } for p in products]
-    
-    return render_template('index.html', products=products, categories=categories, banners=banners, prod_json=prod_json)
+    return render_template('index.html', products=products, categories=categories, banners=banners, prod_json=get_prod_json(products))
 
 @app.route('/admin')
 def admin():
     products = Product.query.all()
     categories = Category.query.all()
     banners = Banner.query.all()
-    
-    # Add this block here to fix the "Undefined" error
-    prod_list = [{
-        "id": p.id, "name": p.name, "brand": p.brand, "category": p.category,
-        "car_model": p.car_model, "quality": p.quality, "price": p.price,
-        "img1": p.img1, "img2": p.img2, "img3": p.img3, "video": p.video, "details": p.details
-    } for p in products]
-    
-    # Pass prod_json=prod_list to the template
-    return render_template('admin.html', products=products, categories=categories, banners=banners, prod_json=prod_list)
-    
+    return render_template('admin.html', products=products, categories=categories, banners=banners, prod_json=get_prod_json(products))
 
 @app.route('/save_product', methods=['POST'])
 def save_product():
