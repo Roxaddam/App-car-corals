@@ -2,218 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CAR CORALS | Premium Car Gear</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Admin Dashboard | Car Corals</title>
     <style>
-        :root { --primary: #0f172a; --accent: #3b82f6; --bg: #f8fafc; --white: #ffffff; --whatsapp: #25D366; --nav: #94a3b8; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--primary); padding-bottom: 110px; }
-        .header { background: var(--white); padding: 15px 20px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .search-area { background: var(--white); padding: 10px 20px; display: flex; gap: 10px; position: sticky; top: 58px; z-index: 999; border-bottom: 1px solid #eee; }
-        .search-box { flex: 1; background: #f1f3f6; border-radius: 12px; display: flex; align-items: center; padding: 0 15px; border: 1px solid #e0e0e0; }
-        .search-box input { border: none; background: transparent; outline: none; width: 100%; height: 44px; font-size: 14px; }
-        .ai-btn { width: 46px; height: 46px; background: var(--primary); border-radius: 12px; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .ai-btn svg { width: 24px; height: 24px; stroke: white; stroke-width: 2; fill: none; }
-        .hero { padding: 15px; height: 200px; }
-        .slider { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; position: relative; background: #ddd; }
-        .slide { position: absolute; inset: 0; opacity: 0; transition: 0.8s; }
-        .slide.active { opacity: 1; }
-        .slide img { width: 100%; height: 100%; object-fit: cover; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
-        .card { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; cursor: pointer; }
-        .card img { width: 100%; height: 110px; object-fit: contain; margin-bottom: 8px; background: #f9f9f9; border-radius: 10px; }
-        #detail-view { display: none; position: fixed; inset: 0; background: white; z-index: 3000; overflow-y: auto; padding-bottom: 100px; }
-        .media-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 350px; background: #000; }
-        .media-item { min-width: 100%; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; }
-        .media-item img, .media-item video { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .bottom-bar { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--primary); height: 70px; border-radius: 24px; display: flex; justify-content: space-around; align-items: center; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .nav-btn { color: var(--nav); text-decoration: none; font-size: 10px; font-weight: 700; display: flex; flex-direction: column; align-items: center; }
-        .nav-btn.active { color: white; }
-        .nav-btn svg { width: 22px; height: 22px; margin-bottom: 4px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+        body { font-family: sans-serif; background: #f4f7fa; padding: 20px; }
+        .box { background: white; padding: 25px; border-radius: 15px; max-width: 800px; margin: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-top: 5px; outline: none; }
+        button { background: #3b82f6; color: white; border: none; padding: 14px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .p-item { display: flex; justify-content: space-between; background: #f9f9f9; padding: 15px; margin-top: 10px; border-radius: 12px; align-items: center; }
     </style>
 </head>
-<body onload="initApp()">
+<body onload="initAdmin()">
 
-    <header class="header"><div class="logo">Car Corals</div></header>
+    <div class="box">
+        <div style="position:absolute; top:20px; right:20px; font-size:24px; cursor:pointer;" onclick="toggleModal()">⋮</div>
+        <h2 id="title">Add Product</h2>
+        <form action="/save_product" method="POST">
+            <input type="hidden" name="id" id="p-id">
+            <div class="form-grid">
+                <div><label>Name</label><input type="text" name="name" id="p-name" required></div>
+                <div><label>Category</label><select name="category" id="p-cat">
+                    {% for c in categories %}<option value="{{c.name}}">{{c.name}}</option>{% endfor %}
+                </select></div>
+                <div><label>Brand</label><input type="text" name="brand" id="p-brand"></div>
+                <div><label>Quality</label><input type="text" name="quality" id="p-quality"></div>
+                <div><label>Car Model</label><input type="text" name="car_model" id="p-model"></div>
+                <div><label>Price</label><input type="text" name="price" id="p-price"></div>
+                <div><label>Image 1</label><input type="text" name="img1" id="p-img1"></div>
+                <div><label>Image 2</label><input type="text" id="p-img2" name="img2"></div>
+                <div><label>Image 3</label><input type="text" id="p-img3" name="img3"></div>
+                <div><label>Video URL</label><input type="text" id="p-vid" name="video"></div>
+            </div>
+            <textarea name="details" id="p-details" placeholder="Full Details..."></textarea>
+            <button type="submit">Save Product</button>
+        </form>
 
-    <div class="search-area">
-        <div class="search-box"><input type="text" id="mainSearch" placeholder="Search gear, car, brand..." onkeyup="handleSearch()"></div>
-        <button class="ai-btn" onclick="openScanner()">
-            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-        </button>
-    </div>
-
-    <div id="page-home" class="page active">
-        <div class="hero">
-            <div class="slider" id="hero-slider">
-                {% for b in banners %}
-                <div class="slide {% if loop.first %}active{% endif %}"><img src="{{ b.url }}"></div>
-                {% endfor %}
+        <h3 style="margin-top:30px;">Inventory</h3>
+        {% for p in products %}
+        <div class="p-item">
+            <span>{{ p.name }}</span>
+            <div>
+                <button onclick="editProduct({{ p.id }})" style="width:auto; padding:5px; background:orange;">Edit</button>
+                <a href="/delete_product/{{p.id}}"><button style="width:auto; padding:5px; background:red;">X</button></a>
             </div>
         </div>
-        <div class="grid" id="home-grid"></div>
+        {% endfor %}
     </div>
 
-    <div id="page-menu" class="page">
-        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px; padding:20px;">
-            {% for c in categories %}
-            <div onclick="filterCategory('{{c.name}}')" style="text-align:center;">
-                <div style="width:65px; height:65px; background:#eff6ff; border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; font-size:28px; border:1px solid #dbeafe;">{{c.icon}}</div>
-                <span style="font-size:12px; font-weight:700;">{{c.name}}</span>
-            </div>
-            {% endfor %}
-            <div onclick="renderProducts(allProducts)" style="text-align:center;">
-                <div style="width:65px; height:65px; background:#f8fafc; border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; font-size:28px; border:1px solid #eee;">🏠</div>
-                <span style="font-size:12px; font-weight:700;">All</span>
-            </div>
+    <div id="admin-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:white; padding:30px; border-radius:24px; width:340px;">
+            <h4>Manage</h4>
+            <form action="/save_category" method="POST"><input type="text" name="name" placeholder="Cat Name"><input type="text" name="icon" placeholder="Emoji"><button type="submit" style="background:green;">Add Cat</button></form>
+            <form action="/save_banners" method="POST" style="margin-top:20px;"><input type="text" name="banner_urls" placeholder="URL 1"><input type="text" name="banner_urls" placeholder="URL 2"><button type="submit" style="background:black;">Update Banners</button></form>
+            <button onclick="toggleModal()" style="background:none; color:red; margin-top:10px;">Close</button>
         </div>
     </div>
-
-    <div id="page-fav" class="page">
-        <h3 style="padding:20px">Saved Gear</h3>
-        <div id="fav-grid" class="grid"></div>
-    </div>
-
-    <div id="page-contact" class="page">
-        <div style="padding: 20px;">
-            <div style="background: #0f172a; color: white; padding: 40px 20px; border-radius: 24px; text-align: center;">
-                <h2>Contact Us</h2>
-                <p style="margin: 15px 0;">9734752040</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
-                    <a href="https://www.facebook.com/share/1AsWW8D4f3/" style="color:white;text-decoration:none;background:#3b5998;padding:10px;border-radius:10px;font-size:12px;">Facebook</a>
-                    <a href="https://www.instagram.com/carcorals?igsh=c2d6MzhncDZ0NHM=" style="color:white;text-decoration:none;background:#e1306c;padding:10px;border-radius:10px;font-size:12px;">Instagram</a>
-                    <a href="mailto:carcorals@Gmail.com" style="color:white;text-decoration:none;background:#ea4335;padding:10px;border-radius:10px;font-size:12px;">Email</a>
-                    <a href="https://wa.me/919734752040" style="color:white;text-decoration:none;background:#25D366;padding:10px;border-radius:10px;font-size:12px;">WhatsApp</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="detail-view">
-        <button onclick="closeDetail()" style="padding:20px; border:none; background:none; font-size:18px;">✕ Back</button>
-        <div class="media-scroll" id="det-media"></div>
-        <div style="padding:20px;">
-            <p id="det-brand" style="color:var(--accent); font-weight:800; font-size:12px; text-transform:uppercase;"></p>
-            <h2 id="det-name"></h2>
-            <div style="margin:10px 0;"><span id="det-car" style="background:#f1f5f9; padding:5px 12px; border-radius:6px; font-size:12px;"></span></div>
-            <h1 id="det-price" style="margin:15px 0;"></h1>
-            <p id="det-details" style="color:#64748b; line-height:1.6;"></p>
-        </div>
-        <div style="position:fixed; bottom:0; width:100%; padding:20px; background:white; display:grid; grid-template-columns: 60px 1fr; gap:10px; box-shadow:0 -5px 15px rgba(0,0,0,0.05);">
-            <button id="det-fav-btn" onclick="toggleFav()" style="border:1.5px solid #eee; border-radius:12px; font-size:24px; background:white;">❤</button>
-            <a href="#" id="det-wa-link" style="background:var(--whatsapp); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-weight:700;">Enquire</a>
-        </div>
-    </div>
-
-    <div id="scanner-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:4000; align-items:center; justify-content:center; padding:20px;">
-        <div style="background:white; padding:30px; border-radius:24px; width:100%; text-align:center;">
-            <h3>AI Car Scanner</h3>
-            <button onclick="simulateScan('Swift')" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:12px; margin-top:15px; font-weight:700;">📸 Scan Car</button>
-            <button onclick="closeScanner()" style="margin-top:10px; color:red; background:none; border:none;">Cancel</button>
-        </div>
-    </div>
-
-    <nav class="bottom-bar">
-        <a href="javascript:void(0)" class="nav-btn active" onclick="showPage('home')">
-            <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Home
-        </a>
-        <a href="javascript:void(0)" class="nav-btn" onclick="showPage('menu')">
-            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>Menu
-        </a>
-        <a href="javascript:void(0)" class="nav-btn" onclick="showPage('fav')">
-            <svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>Saved
-        </a>
-        <a href="javascript:void(0)" class="nav-btn" onclick="showPage('contact')">
-            <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z"/></svg>Contact
-        </a>
-    </nav>
 
     <script>
-        let allProducts = {{ prod_json | tojson }};
-        let favorites = JSON.parse(localStorage.getItem('cc_favs')) || [];
-        let currentP = null;
-
-        function initApp() {
-            renderProducts(allProducts);
-            startSlider();
-        }
-
-        function renderProducts(items) {
-            const grid = document.getElementById('home-grid');
-            grid.innerHTML = items.length ? '' : '<p style="grid-column:1/-1;text-align:center;padding:50px;">No items found.</p>';
-            items.forEach(p => {
-                grid.innerHTML += `
-                    <div class="card" onclick="openProductDetail(${p.id})">
-                        <img src="${p.img1}">
-                        <div style="font-size:13px; font-weight:700;">${p.name}</div>
-                        <div style="color:var(--accent); font-weight:800;">${p.price}</div>
-                    </div>`;
-            });
-            showPage('home');
-        }
-
-        function handleSearch() {
-            const q = document.getElementById('mainSearch').value.toLowerCase();
-            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(q) || p.car_model.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
-            renderProducts(filtered);
-        }
-
-        function filterCategory(cat) {
-            const filtered = allProducts.filter(p => p.category === cat);
-            renderProducts(filtered);
-        }
-
-        function openProductDetail(id) {
-            currentP = allProducts.find(x => x.id === id);
-            document.getElementById('detail-view').style.display = 'block';
-            document.getElementById('det-name').innerText = currentP.name;
-            document.getElementById('det-brand').innerText = currentP.brand;
-            document.getElementById('det-car').innerText = currentP.car_model;
-            document.getElementById('det-price').innerText = currentP.price;
-            document.getElementById('det-details').innerText = currentP.details;
-            let media = [currentP.img1, currentP.img2, currentP.img3, currentP.video].filter(x => x && x.length > 5);
-            document.getElementById('det-media').innerHTML = media.map(m => `
-                <div class="media-item">${m.includes('.mp4') ? `<video src="${m}" autoplay muted loop playsinline></video>` : `<img src="${m}">`}</div>
-            `).join('');
-            updateFavBtnStyle();
-            document.getElementById('det-wa-link').href = `https://wa.me/919734752040?text=Interested in ${currentP.name}`;
-        }
-
-        function closeDetail() { document.getElementById('detail-view').style.display = 'none'; }
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            let b = document.querySelector(`[onclick*="${id}"]`); if(b) b.classList.add('active');
-            if(id === 'fav') renderFavs();
-        }
-
-        function renderFavs() {
-            const grid = document.getElementById('fav-grid');
-            grid.innerHTML = favorites.length ? '' : '<p style="grid-column:1/-1;text-align:center;padding:50px;">Nothing saved.</p>';
-            favorites.forEach(p => {
-                grid.innerHTML += `<div class="card" onclick="openProductDetail(${p.id})"><img src="${p.img1}"><div>${p.name}</div><div style="color:var(--accent); font-weight:800;">${p.price}</div></div>`;
-            });
-        }
-
-        function toggleFav() {
-            const idx = favorites.findIndex(f => f.id === currentP.id);
-            if(idx > -1) favorites.splice(idx, 1); else favorites.push(currentP);
-            localStorage.setItem('cc_favs', JSON.stringify(favorites)); updateFavBtnStyle();
-        }
-
-        function updateFavBtnStyle() {
-            document.getElementById('det-fav-btn').style.color = favorites.some(f => f.id === currentP.id) ? '#ff4757' : '#ddd';
-        }
-
-        function openScanner() { document.getElementById('scanner-modal').style.display = 'flex'; }
-        function closeScanner() { document.getElementById('scanner-modal').style.display = 'none'; }
-        function simulateScan(car) { closeScanner(); const f = allProducts.filter(p => p.car_model.toLowerCase().includes(car.toLowerCase())); renderProducts(f); }
-
-        function startSlider() {
-            let idx = 0; const s = document.querySelectorAll('.slide'); if(s.length < 2) return;
-            setInterval(() => { s[idx].classList.remove('active'); idx = (idx + 1) % s.length; s[idx].classList.add('active'); }, 4000);
+        let allProds = {{ prod_json | tojson }};
+        function toggleModal() { let m = document.getElementById('admin-modal'); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; }
+        function editProduct(id) {
+            let p = allProds.find(x => x.id === id);
+            document.getElementById('p-id').value = p.id;
+            document.getElementById('p-name').value = p.name;
+            document.getElementById('p-brand').value = p.brand;
+            document.getElementById('p-quality').value = p.quality;
+            document.getElementById('p-model').value = p.car_model;
+            document.getElementById('p-price').value = p.price;
+            document.getElementById('p-img1').value = p.img1;
+            document.getElementById('p-img2').value = p.img2;
+            document.getElementById('p-img3').value = p.img3;
+            document.getElementById('p-vid').value = p.video;
+            document.getElementById('p-details').value = p.details;
+            window.scrollTo(0,0);
         }
     </script>
 </body>
