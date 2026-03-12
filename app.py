@@ -62,7 +62,17 @@ def admin():
     products = Product.query.all()
     categories = Category.query.all()
     banners = Banner.query.all()
-    return render_template('admin.html', products=products, categories=categories, banners=banners)
+    
+    # Add this block here to fix the "Undefined" error
+    prod_list = [{
+        "id": p.id, "name": p.name, "brand": p.brand, "category": p.category,
+        "car_model": p.car_model, "quality": p.quality, "price": p.price,
+        "img1": p.img1, "img2": p.img2, "img3": p.img3, "video": p.video, "details": p.details
+    } for p in products]
+    
+    # Pass prod_json=prod_list to the template
+    return render_template('admin.html', products=products, categories=categories, banners=banners, prod_json=prod_list)
+    
 
 @app.route('/save_product', methods=['POST'])
 def save_product():
