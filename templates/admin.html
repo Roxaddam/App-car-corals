@@ -9,51 +9,24 @@
         :root { --primary: #0f172a; --accent: #3b82f6; --bg: #f8fafc; --white: #ffffff; --whatsapp: #25D366; --nav: #94a3b8; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--primary); padding-bottom: 110px; }
-
-        /* HEADER */
         .header { background: var(--white); padding: 15px 20px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .logo { font-size: 18px; font-weight: 800; text-transform: uppercase; }
-
-        /* SEARCH & SCANNER */
         .search-area { background: var(--white); padding: 10px 20px; display: flex; gap: 10px; position: sticky; top: 58px; z-index: 999; border-bottom: 1px solid #eee; }
         .search-box { flex: 1; background: #f1f3f6; border-radius: 12px; display: flex; align-items: center; padding: 0 15px; border: 1px solid #e0e0e0; }
         .search-box input { border: none; background: transparent; outline: none; width: 100%; height: 44px; font-size: 14px; }
-        
-        /* ENHANCED SCANNER BUTTON */
-        .ai-btn { 
-            width: 46px; height: 46px; 
-            background: var(--primary); 
-            border-radius: 12px; 
-            border: none; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: 0.3s;
-        }
-        .ai-btn:active { transform: scale(0.9); }
+        .ai-btn { width: 46px; height: 46px; background: var(--primary); border-radius: 12px; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .ai-btn svg { width: 24px; height: 24px; stroke: white; stroke-width: 2; fill: none; }
-
-        /* HERO SLIDER */
         .hero { padding: 15px; height: 200px; }
         .slider { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; position: relative; background: #ddd; }
         .slide { position: absolute; inset: 0; opacity: 0; transition: 0.8s; }
         .slide.active { opacity: 1; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* CONTENT */
-        .page { display: none; }
-        .page.active { display: block; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .card { background: white; border-radius: 16px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; cursor: pointer; }
         .card img { width: 100%; height: 110px; object-fit: contain; margin-bottom: 8px; background: #f9f9f9; border-radius: 10px; }
-
-        /* DETAIL VIEW */
-        #detail-view { display: none; position: fixed; inset: 0; background: white; z-index: 3000; overflow-y: auto; }
+        #detail-view { display: none; position: fixed; inset: 0; background: white; z-index: 3000; overflow-y: auto; padding-bottom: 100px; }
         .media-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 350px; background: #000; }
         .media-item { min-width: 100%; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; }
         .media-item img, .media-item video { max-width: 100%; max-height: 100%; object-fit: contain; }
-
-        /* BOTTOM NAV */
         .bottom-bar { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--primary); height: 70px; border-radius: 24px; display: flex; justify-content: space-around; align-items: center; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .nav-btn { color: var(--nav); text-decoration: none; font-size: 10px; font-weight: 700; display: flex; flex-direction: column; align-items: center; }
         .nav-btn.active { color: white; }
@@ -65,7 +38,7 @@
     <header class="header"><div class="logo">Car Corals</div></header>
 
     <div class="search-area">
-        <div class="search-box"><input type="text" id="mainSearch" placeholder="Search car, brand, gear..." onkeyup="handleSearch()"></div>
+        <div class="search-box"><input type="text" id="mainSearch" placeholder="Search gear, car, brand..." onkeyup="handleSearch()"></div>
         <button class="ai-btn" onclick="openScanner()">
             <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
         </button>
@@ -91,26 +64,26 @@
             </div>
             {% endfor %}
             <div onclick="renderProducts(allProducts)" style="text-align:center;">
-                <div style="width:65px; height:65px; background:#f8fafc; border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; font-size:28px; border:1px solid #eee;">🔥</div>
+                <div style="width:65px; height:65px; background:#f8fafc; border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; font-size:28px; border:1px solid #eee;">🏠</div>
                 <span style="font-size:12px; font-weight:700;">All</span>
             </div>
         </div>
     </div>
 
     <div id="page-fav" class="page">
-        <h3 style="padding:20px">My Saved Gear</h3>
+        <h3 style="padding:20px">Saved Gear</h3>
         <div id="fav-grid" class="grid"></div>
     </div>
 
     <div id="page-contact" class="page">
         <div style="padding: 20px;">
             <div style="background: #0f172a; color: white; padding: 40px 20px; border-radius: 24px; text-align: center;">
-                <h2>Contact Car Corals</h2>
-                <p style="margin: 15px 0;">Customer Care: 9734752040</p>
+                <h2>Contact Us</h2>
+                <p style="margin: 15px 0;">9734752040</p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
                     <a href="https://www.facebook.com/share/1AsWW8D4f3/" style="color:white;text-decoration:none;background:#3b5998;padding:10px;border-radius:10px;font-size:12px;">Facebook</a>
                     <a href="https://www.instagram.com/carcorals?igsh=c2d6MzhncDZ0NHM=" style="color:white;text-decoration:none;background:#e1306c;padding:10px;border-radius:10px;font-size:12px;">Instagram</a>
-                    <a href="mailto:carcorals@Gmail.com" style="color:white;text-decoration:none;background:#ea4335;padding:10px;border-radius:10px;font-size:12px;">Gmail</a>
+                    <a href="mailto:carcorals@Gmail.com" style="color:white;text-decoration:none;background:#ea4335;padding:10px;border-radius:10px;font-size:12px;">Email</a>
                     <a href="https://wa.me/919734752040" style="color:white;text-decoration:none;background:#25D366;padding:10px;border-radius:10px;font-size:12px;">WhatsApp</a>
                 </div>
             </div>
@@ -124,21 +97,20 @@
             <p id="det-brand" style="color:var(--accent); font-weight:800; font-size:12px; text-transform:uppercase;"></p>
             <h2 id="det-name"></h2>
             <div style="margin:10px 0;"><span id="det-car" style="background:#f1f5f9; padding:5px 12px; border-radius:6px; font-size:12px;"></span></div>
-            <h1 id="det-price" style="margin:15px 0; color:var(--primary);"></h1>
+            <h1 id="det-price" style="margin:15px 0;"></h1>
             <p id="det-details" style="color:#64748b; line-height:1.6;"></p>
         </div>
         <div style="position:fixed; bottom:0; width:100%; padding:20px; background:white; display:grid; grid-template-columns: 60px 1fr; gap:10px; box-shadow:0 -5px 15px rgba(0,0,0,0.05);">
             <button id="det-fav-btn" onclick="toggleFav()" style="border:1.5px solid #eee; border-radius:12px; font-size:24px; background:white;">❤</button>
-            <a href="#" id="det-wa-link" style="background:var(--whatsapp); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-weight:700;">Enquire on WhatsApp</a>
+            <a href="#" id="det-wa-link" style="background:var(--whatsapp); color:white; border-radius:12px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-weight:700;">Enquire</a>
         </div>
     </div>
 
     <div id="scanner-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:4000; align-items:center; justify-content:center; padding:20px;">
         <div style="background:white; padding:30px; border-radius:24px; width:100%; text-align:center;">
             <h3>AI Car Scanner</h3>
-            <p style="margin:10px 0; color:#666;">Scan your car to find compatible items</p>
-            <button onclick="simulateScan('Swift')" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:12px; margin-bottom:10px; font-weight:700;">📸 Scan Car</button>
-            <button onclick="closeScanner()" style="color:red; background:none; border:none;">Cancel</button>
+            <button onclick="simulateScan('Swift')" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:12px; margin-top:15px; font-weight:700;">📸 Scan Car</button>
+            <button onclick="closeScanner()" style="margin-top:10px; color:red; background:none; border:none;">Cancel</button>
         </div>
     </div>
 
@@ -167,27 +139,15 @@
             startSlider();
         }
 
-        function startSlider() {
-            let idx = 0;
-            const slides = document.querySelectorAll('.slide');
-            if(slides.length < 2) return;
-            setInterval(() => {
-                slides[idx].classList.remove('active');
-                idx = (idx + 1) % slides.length;
-                slides[idx].classList.add('active');
-            }, 4000);
-        }
-
         function renderProducts(items) {
             const grid = document.getElementById('home-grid');
-            grid.innerHTML = items.length ? '' : '<p style="grid-column:1/-1;text-align:center;padding:50px;">No gear found.</p>';
+            grid.innerHTML = items.length ? '' : '<p style="grid-column:1/-1;text-align:center;padding:50px;">No items found.</p>';
             items.forEach(p => {
                 grid.innerHTML += `
-                    <div class="card" onclick='openDetail(${JSON.stringify(p)})'>
+                    <div class="card" onclick="openProductDetail(${p.id})">
                         <img src="${p.img1}">
-                        <div class="card-title">${p.name}</div>
+                        <div style="font-size:13px; font-weight:700;">${p.name}</div>
                         <div style="color:var(--accent); font-weight:800;">${p.price}</div>
-                        <div style="font-size:10px; color:gray;">${p.car_model}</div>
                     </div>`;
             });
             showPage('home');
@@ -195,11 +155,7 @@
 
         function handleSearch() {
             const q = document.getElementById('mainSearch').value.toLowerCase();
-            const filtered = allProducts.filter(p => 
-                p.name.toLowerCase().includes(q) || 
-                p.car_model.toLowerCase().includes(q) || 
-                p.category.toLowerCase().includes(q)
-            );
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(q) || p.car_model.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
             renderProducts(filtered);
         }
 
@@ -208,50 +164,43 @@
             renderProducts(filtered);
         }
 
-        function openDetail(p) {
-            currentP = p;
+        function openProductDetail(id) {
+            currentP = allProducts.find(x => x.id === id);
             document.getElementById('detail-view').style.display = 'block';
-            document.getElementById('det-name').innerText = p.name;
-            document.getElementById('det-brand').innerText = p.brand;
-            document.getElementById('det-car').innerText = p.car_model;
-            document.getElementById('det-price').innerText = p.price;
-            document.getElementById('det-details').innerText = p.details;
-
-            let media = [p.img1, p.img2, p.img3, p.video].filter(x => x && x.length > 5);
+            document.getElementById('det-name').innerText = currentP.name;
+            document.getElementById('det-brand').innerText = currentP.brand;
+            document.getElementById('det-car').innerText = currentP.car_model;
+            document.getElementById('det-price').innerText = currentP.price;
+            document.getElementById('det-details').innerText = currentP.details;
+            let media = [currentP.img1, currentP.img2, currentP.img3, currentP.video].filter(x => x && x.length > 5);
             document.getElementById('det-media').innerHTML = media.map(m => `
-                <div class="media-item">
-                    ${m.includes('.mp4') ? `<video src="${m}" autoplay muted loop playsinline></video>` : `<img src="${m}">`}
-                </div>`).join('');
-            
+                <div class="media-item">${m.includes('.mp4') ? `<video src="${m}" autoplay muted loop playsinline></video>` : `<img src="${m}">`}</div>
+            `).join('');
             updateFavBtnStyle();
-            document.getElementById('det-wa-link').href = `https://wa.me/919734752040?text=Interested in ${p.name} for ${p.car_model}`;
+            document.getElementById('det-wa-link').href = `https://wa.me/919734752040?text=Interested in ${currentP.name}`;
         }
 
         function closeDetail() { document.getElementById('detail-view').style.display = 'none'; }
-
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + id).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            let btn = document.querySelector(`[onclick*="${id}"]`);
-            if(btn) btn.classList.add('active');
+            let b = document.querySelector(`[onclick*="${id}"]`); if(b) b.classList.add('active');
             if(id === 'fav') renderFavs();
         }
 
         function renderFavs() {
             const grid = document.getElementById('fav-grid');
-            grid.innerHTML = favorites.length ? '' : '<p style="grid-column:1/-1;text-align:center;padding:50px;">Nothing saved yet.</p>';
+            grid.innerHTML = favorites.length ? '' : '<p style="grid-column:1/-1;text-align:center;padding:50px;">Nothing saved.</p>';
             favorites.forEach(p => {
-                grid.innerHTML += `<div class="card" onclick='openDetail(${JSON.stringify(p)})'><img src="${p.img1}"><div class="card-title">${p.name}</div><div style="color:var(--accent); font-weight:800;">${p.price}</div></div>`;
+                grid.innerHTML += `<div class="card" onclick="openProductDetail(${p.id})"><img src="${p.img1}"><div>${p.name}</div><div style="color:var(--accent); font-weight:800;">${p.price}</div></div>`;
             });
         }
 
         function toggleFav() {
             const idx = favorites.findIndex(f => f.id === currentP.id);
-            if(idx > -1) favorites.splice(idx, 1);
-            else favorites.push(currentP);
-            localStorage.setItem('cc_favs', JSON.stringify(favorites));
-            updateFavBtnStyle();
+            if(idx > -1) favorites.splice(idx, 1); else favorites.push(currentP);
+            localStorage.setItem('cc_favs', JSON.stringify(favorites)); updateFavBtnStyle();
         }
 
         function updateFavBtnStyle() {
@@ -260,10 +209,11 @@
 
         function openScanner() { document.getElementById('scanner-modal').style.display = 'flex'; }
         function closeScanner() { document.getElementById('scanner-modal').style.display = 'none'; }
-        function simulateScan(car) {
-            closeScanner();
-            const filtered = allProducts.filter(p => p.car_model.toLowerCase().includes(car.toLowerCase()));
-            renderProducts(filtered);
+        function simulateScan(car) { closeScanner(); const f = allProducts.filter(p => p.car_model.toLowerCase().includes(car.toLowerCase())); renderProducts(f); }
+
+        function startSlider() {
+            let idx = 0; const s = document.querySelectorAll('.slide'); if(s.length < 2) return;
+            setInterval(() => { s[idx].classList.remove('active'); idx = (idx + 1) % s.length; s[idx].classList.add('active'); }, 4000);
         }
     </script>
 </body>
